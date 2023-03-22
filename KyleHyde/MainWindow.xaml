@@ -1,0 +1,50 @@
+﻿<Window
+    x:Class="KyleHyde.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:KyleHyde"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="KyleHyde (Hotel Dusk and Last Window)"
+    Width="800"
+    Height="450"
+    mc:Ignorable="d">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Border
+            x:Name="borderHotelDusk"
+            Grid.Row="0"
+            AllowDrop="True"
+            Background="#FFFFEBEB"
+            Drop="HotelDuskDrop">
+            <StackPanel Orientation="Vertical">
+                <Label HorizontalAlignment="Center" Content="Drag Hotel Dusk files here" />
+                <Label Content=".frm" />
+                <Label Content=".anm" />
+                <Label Content=".wpf - DO NOT OPEN" />
+                <Label Content=".bin - Might be image or something else" />
+                <Label Content=".dtx - Shows image" />
+                <Label Content=".txt - Shows decompressed text" />
+            </StackPanel>
+        </Border>
+        <Border
+            x:Name="borderLastWindow"
+            Grid.Row="1"
+            AllowDrop="True"
+            Background="#FFDCE9FF"
+            Drop="LastWindowDrop">
+            <StackPanel Orientation="Vertical">
+                <Label HorizontalAlignment="Center" Content="Drag Last Window files here" />
+                <Label Content=".pack will extract to same location" />
+                <Label Content=".bra will open animated preview" />
+                <Label Content=".bin will prompt to save uncompressed binary file (use a hex editor)" />
+                <Label Content=".bpg may show partial image" />
+                <Label Content=".ebp may show image (usually fails)" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
