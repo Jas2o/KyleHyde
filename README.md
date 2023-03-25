@@ -10,3 +10,4 @@ Regarding the images there's no buttons in the application to save in a usable f
 - Look in the directory that contains the app for a GT-LastWindow folder.
 - Look inside there for a .bra file and drop that into the bottom section of the app.
 - You'll get a window that shows the animation on repeat.
+- The save button will dump the frames into an Export directory in the same location as the app.
