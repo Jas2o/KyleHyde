@@ -15,6 +15,7 @@ namespace KyleHyde.Formats.HotelDusk {
 
         public override void Open(string filePath, bool export = false, bool useGTFSView = false) {
             string fileName = Path.GetFileName(filePath);
+            string fileNameNoExt = Path.GetFileNameWithoutExtension(filePath);
 
             string[] filenameParts = fileName.Split('.');
             Array.Reverse(filenameParts);
@@ -23,12 +24,12 @@ namespace KyleHyde.Formats.HotelDusk {
                 GTFS fs = new GTFS(filePath);
                 FRM frm = new FRM(fs);
 
-                new WindowImage(frm.bitmap).Show();
+                new WindowImage(frm.bitmap, fileNameNoExt).Show();
             } else if (filenameParts[0].ToUpper() == "ANM") {
                 GTFS fs = new GTFS(filePath);
                 ANM anm = new ANM(fs);
 
-                new WindowImageAnimated(anm.BitmapsBlended()).Show();
+                new WindowImageAnimated(anm.BitmapsBlended(), fileNameNoExt).Show();
 
             } else if (filenameParts[0].ToUpper() == "WPF") {
                 //WPF.Open(filePath);
@@ -43,12 +44,12 @@ namespace KyleHyde.Formats.HotelDusk {
                     LRIM lrim = new LRIM(fs);
                 } else {
                     WPFBIN wpfbin = new WPFBIN(fs);
-                    new WindowImage(wpfbin.bitmap).Show();
+                    new WindowImage(wpfbin.bitmap, fileNameNoExt).Show();
                 }
             } else if (filenameParts[0].ToUpper() == "DTX") {
                 GTFS fs = new GTFS(filePath);
                 WPFBIN wpfbin = new WPFBIN(fs);
-                new WindowImage(wpfbin.bitmap).Show();
+                new WindowImage(wpfbin.bitmap, fileNameNoExt).Show();
                 //GTFS compressed = new GTFS(filePath);
                 //GTFS decompressed = Decompress.ToGTFS(compressed);
                 //decompressed.WriteBytesToFile("GT-KH-DecompDTX.gtbin");

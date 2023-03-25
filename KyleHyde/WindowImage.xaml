@@ -11,8 +11,21 @@
     Loaded="Window_Loaded"
     mc:Ignorable="d">
     <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Margin="0,0,0,10">
+            <Button
+                x:Name="btnSave"
+                Padding="5,5,5,5"
+                HorizontalAlignment="Left"
+                Click="btnSave_Click"
+                Content="Save" />
+        </StackPanel>
         <Image
             x:Name="imageBox"
+            Grid.Row="1"
             Stretch="None"
             StretchDirection="DownOnly" />
     </Grid>

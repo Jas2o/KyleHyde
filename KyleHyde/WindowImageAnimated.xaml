@@ -10,8 +10,21 @@
     Height="450"
     mc:Ignorable="d">
     <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Margin="0,0,0,10">
+            <Button
+                x:Name="btnSaveFrames"
+                Padding="5,5,5,5"
+                HorizontalAlignment="Left"
+                Click="btnSaveFrames_Click"
+                Content="Save Frames" />
+        </StackPanel>
         <Image
             x:Name="imageBox"
+            Grid.Row="1"
             Stretch="None"
             StretchDirection="DownOnly" />
     </Grid>

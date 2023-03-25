@@ -21,6 +21,7 @@ namespace KyleHyde.Formats.LastWindow {
 
         public override void Open(string filePath, bool export = false, bool useGTFSView = false) {
             string fileName = Path.GetFileName(filePath);
+            string fileNameNoExt = Path.GetFileNameWithoutExtension(filePath);
 
             string[] filenameParts = fileName.Split('.');
             Array.Reverse(filenameParts);
@@ -30,7 +31,7 @@ namespace KyleHyde.Formats.LastWindow {
                 fs.WriteBytesToFile("GT-KH-ZL.out");
 
                 BPG bpg = new BPG(fs, fileName.ToLower());
-                new WindowImage(bpg.bitmap).Show();
+                new WindowImage(bpg.bitmap, fileNameNoExt).Show();
 
                 //if(useGTFSView) new GTFSView(fs).Show();
             } else if (filenameParts[0].ToUpper() == "EBP") {
@@ -40,7 +41,7 @@ namespace KyleHyde.Formats.LastWindow {
                 EBP ebp = new EBP(fs);
 
                 if(ebp.bitmap != null)
-                    new WindowImage(ebp.bitmap).Show();
+                    new WindowImage(ebp.bitmap, fileNameNoExt).Show();
 
             } else if (filenameParts[0].ToUpper() == "BIN") {
                 GTFS fs = Decompress(filePath);
@@ -64,7 +65,7 @@ namespace KyleHyde.Formats.LastWindow {
                         bitmap.Save("test-dec-" + (n++) + ".png");
                 }
 
-                new WindowImageAnimated(bitmaps).Show();
+                new WindowImageAnimated(bitmaps, fileNameNoExt).Show();
 
                 //string inputtext = LWBRA.Open(filePath, export, useGTFSView);
                 //new FormText(inputtext).Show();

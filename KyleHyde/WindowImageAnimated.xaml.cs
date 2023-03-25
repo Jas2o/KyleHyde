@@ -1,20 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace KyleHyde {
     /// <summary>
@@ -22,6 +12,7 @@ namespace KyleHyde {
     /// </summary>
     public partial class WindowImageAnimated : Window {
 
+        private string name;
         private Bitmap[] bmps;
         private BitmapImage[] bitmapImages;
         private int indexLast;
@@ -31,9 +22,11 @@ namespace KyleHyde {
             InitializeComponent();
         }
 
-        public WindowImageAnimated(Bitmap[] bmps) {
+        public WindowImageAnimated(Bitmap[] bmps, string name) {
             InitializeComponent();
 
+            Title += " - " + name;
+            this.name = name;
             this.bmps = bmps;
             bitmapImages = new BitmapImage[bmps.Length];
             indexLast = 0;
@@ -62,6 +55,16 @@ namespace KyleHyde {
             if (indexLast >= bitmapImages.Length)
                 indexLast = 0;
             imageBox.Source = bitmapImages[indexLast++];
+        }
+
+        private void btnSaveFrames_Click(object sender, RoutedEventArgs e) {
+            Directory.CreateDirectory(@".\Export");
+            for (int i = 0; i < bmps.Length; i++) {
+                string outfile = @".\Export\" + name + "_" + i + ".png";
+                bmps[i].Save(outfile);
+                if(i == 0)
+                    Process.Start("explorer.exe", "/select, \"" + outfile + "\"");
+            }
         }
     }
 }
