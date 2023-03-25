@@ -1,4 +1,4 @@
-﻿using GameTools;
+using GameTools;
 using System;
 using System.Drawing;
 
@@ -162,6 +162,31 @@ namespace KyleHyde.Formats.LastWindow
                                 {
                                     alpha = (byte)((lookup >> 5) * 36);
                                     lookup = (byte)(lookup & 0x1F);
+
+                                    if (alpha == 72)
+                                    {
+                                        alpha = 73;
+                                    }
+                                    if (alpha == 108)
+                                    {
+                                        alpha = 109;
+                                    }
+                                    if (alpha == 144)
+                                    {
+                                        alpha = 146;
+                                    }
+                                    if (alpha == 180)
+                                    {
+                                        alpha = 182;
+                                    }
+                                    if (alpha == 216)
+                                    {
+                                        alpha = 219;
+                                    }
+                                    if (alpha == 252)
+                                    {
+                                        alpha = 255;
+                                    }
                                 }
 
                                 Color c = Color.FromArgb(alpha, palette[lookup]);
