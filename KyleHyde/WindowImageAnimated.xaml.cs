@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -31,7 +31,7 @@ namespace KyleHyde {
             bitmapImages = new BitmapImage[bmps.Length];
             indexLast = 0;
 
-            for(int i = 0; i < bmps.Length; i++) {
+            for (int i = 0; i < bmps.Length; i++) {
                 using (MemoryStream stream = new MemoryStream()) {
                     bmps[i].Save(stream, ImageFormat.Png);
                     stream.Position = 0;
@@ -47,7 +47,7 @@ namespace KyleHyde {
 
             dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
             dispatcherTimer.Tick += dispatcherTimer_Tick;
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 150);
             dispatcherTimer.Start();
         }
 
@@ -62,7 +62,7 @@ namespace KyleHyde {
             for (int i = 0; i < bmps.Length; i++) {
                 string outfile = @".\Export\" + name + "_" + i + ".png";
                 bmps[i].Save(outfile);
-                if(i == 0)
+                if (i == 0)
                     Process.Start("explorer.exe", "/select, \"" + outfile + "\"");
             }
         }
