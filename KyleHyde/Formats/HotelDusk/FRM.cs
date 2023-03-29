@@ -171,9 +171,19 @@ namespace KyleHyde.Formats.HotelDusk {
 
         public static Color Palette2Color(ushort palette) {
             ushort hex = Tools.SwapBytes(palette);
+
+            int R0 = (hex & 0x1F);
+            int R = (R0 << 3) | (R0 >> 2);
+            int G0 = (hex >> 5 & 0x1F);
+            int G = (G0 << 3) | (G0 >> 2);
+            int B0 = (hex >> 10 & 0x1F);
+            int B = (B0 << 3) | (B0 >> 2);
+
+            /* //Previous
             int R = (hex & 0x1F) * 8;
             int G = (hex >> 5 & 0x1F) * 8;
             int B = (hex >> 10 & 0x1F) * 8;
+            */
 
             //int A = (hex >> 15 & 0x01) * 255;
             //return Color.FromArgb(255-A, R, G, B);
