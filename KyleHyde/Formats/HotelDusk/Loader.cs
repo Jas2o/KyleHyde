@@ -1,4 +1,5 @@
 ﻿using GameTools;
+using KyleHyde.Formats.LastWindow;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace KyleHyde.Formats.HotelDusk {
         //filePath = "";
         //openFileDialog.Filter = "All Hotel Dusk|*.anm;*.frm;*.wpf;*.bin;*.txt;*.dtx|All Files (*.*)|*.*";
 
-        public override void Open(string filePath, bool export = false, bool useGTFSView = false) {
+        public override void Open(string filePath, bool export = false) {
             string fileName = Path.GetFileName(filePath);
             string fileNameNoExt = Path.GetFileNameWithoutExtension(filePath);
 
@@ -91,6 +92,37 @@ namespace KyleHyde.Formats.HotelDusk {
 
         public override void MassConvert(List<string> dirfiles) {
             throw new NotImplementedException();
+        }
+
+        public override object Open2(string filePath) {
+            string fileName = Path.GetFileName(filePath);
+            string[] filenameParts = fileName.Split('.');
+            Array.Reverse(filenameParts);
+
+            try {
+                GTFS fs;
+                string extUpper = filenameParts[0].ToUpper();
+                switch (extUpper) {
+                    case "FRM":
+                        fs = new GTFS(filePath);
+                        FRM frm = new FRM(fs);
+                        return frm;
+
+                    case "ANM":
+                        fs = new GTFS(filePath);
+                        ANM anm = new ANM(fs);
+                        return anm;
+
+                    case "DTX":
+                        fs = new GTFS(filePath);
+                        WPFBIN wpfbin = new WPFBIN(fs);
+                        return wpfbin;
+                }
+            } catch (Exception ex) {
+                return ex;
+            }
+
+            return null;
         }
     }
 }

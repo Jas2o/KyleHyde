@@ -21,7 +21,7 @@ namespace KyleHyde.Formats.LastWindow
         private LWBRF[] frames;
 
         /*
-        public static string Open(string filepath, bool export = false, bool useGTFSView = false) {
+        public static string Open(string filepath, bool export = false) {
             / *
             if (export) {
                 GT.WriteSubFile(fs, "test-pal.bin", paletteLen); //RGBA1555

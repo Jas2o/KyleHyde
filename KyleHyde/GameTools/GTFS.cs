@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -34,6 +33,11 @@ namespace GameTools {
 
             nextTrackID = 0;
             _listTrack = new List<Track>();
+        }
+
+        public void PrepareByteStream() {
+            if(bytes == null)
+                bytes = File.ReadAllBytes(file);
         }
 
         public virtual byte ReadByte() {
@@ -101,6 +105,7 @@ namespace GameTools {
         }
 
         public MemoryStream GetStream() {
+            PrepareByteStream();
             return new MemoryStream(bytes);
         }
     }

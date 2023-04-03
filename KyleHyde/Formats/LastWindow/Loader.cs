@@ -19,7 +19,7 @@ namespace KyleHyde.Formats.LastWindow {
             PackExtension = ".pack";
         }
 
-        public override void Open(string filePath, bool export = false, bool useGTFSView = false) {
+        public override void Open(string filePath, bool export = false) {
             string fileName = Path.GetFileName(filePath);
             string fileNameNoExt = Path.GetFileNameWithoutExtension(filePath);
 
@@ -32,8 +32,6 @@ namespace KyleHyde.Formats.LastWindow {
 
                 BPG bpg = new BPG(fs, fileName.ToLower());
                 new WindowImage(bpg.bitmap, fileNameNoExt).Show();
-
-                //if(useGTFSView) new GTFSView(fs).Show();
             } else if (filenameParts[0].ToUpper() == "EBP") {
                 GTFS fs = Decompress(filePath);
                 fs.WriteBytesToFile(filePath + ".gtbin");
@@ -55,6 +53,30 @@ namespace KyleHyde.Formats.LastWindow {
                         Process.Start("explorer.exe", "/select, \"GT-KH-BIN.out\"");
                     }
                 }
+            } else if (filenameParts[0].ToUpper() == "IFB") {
+                GTFS fs = Decompress(filePath);
+
+                if (export)
+                    fs.WriteBytesToFile("GT-KH-IFB.out");
+                else {
+                    MessageBoxResult res = MessageBox.Show("Write out to GT-KH-IFB.out file?", "KyleHyde", MessageBoxButton.YesNo);
+                    if (res == MessageBoxResult.Yes) {
+                        fs.WriteBytesToFile("GT-KH-IFB.out");
+                        Process.Start("explorer.exe", "/select, \"GT-KH-IFB.out\"");
+                    }
+                }
+            } else if (filenameParts[0].ToUpper() == "IBA") {
+                GTFS fs = Decompress(filePath);
+
+                if (export)
+                    fs.WriteBytesToFile("GT-KH-IBA.out");
+                else {
+                    MessageBoxResult res = MessageBox.Show("Write out to GT-KH-IBA.out file?", "KyleHyde", MessageBoxButton.YesNo);
+                    if (res == MessageBoxResult.Yes) {
+                        fs.WriteBytesToFile("GT-KH-IBA.out");
+                        Process.Start("explorer.exe", "/select, \"GT-KH-IBA.out\"");
+                    }
+                }
             } else if (filenameParts[0].ToUpper() == "BRA") {
                 LWBRA bra = new LWBRA(filePath);
                 Bitmap[] bitmaps = bra.GetBitmaps();
@@ -67,7 +89,7 @@ namespace KyleHyde.Formats.LastWindow {
 
                 new WindowImageAnimated(bitmaps, fileNameNoExt).Show();
 
-                //string inputtext = LWBRA.Open(filePath, export, useGTFSView);
+                //string inputtext = LWBRA.Open(filePath, export);
                 //new FormText(inputtext).Show();
             } else if (filenameParts[0].ToUpper() == "PACK") {
                 LWPack.OpenPack(filePath, fileName);
@@ -103,6 +125,42 @@ namespace KyleHyde.Formats.LastWindow {
 
         public override void MassConvert(List<string> dirfiles) {
             throw new NotImplementedException();
+        }
+
+        public override object Open2(string filePath) {
+            string fileName = Path.GetFileName(filePath);
+            string[] filenameParts = fileName.Split('.');
+            Array.Reverse(filenameParts);
+
+            try {
+                GTFS fs;
+                string extUpper = filenameParts[0].ToUpper();
+                switch (extUpper) {
+                    case "BIN":
+                    case "IBA":
+                    case "IFB":
+                        fs = Decompress(filePath);
+                        return fs;
+
+                    case "BPG":
+                        fs = Decompress(filePath);
+                        BPG bpg = new BPG(fs, fileName.ToLower());
+                        return bpg;
+
+                    case "EBP":
+                        fs = Decompress(filePath);
+                        BPG ebp = new BPG(fs, fileName.ToLower());
+                        return ebp;
+
+                    case "BRA":
+                        LWBRA bra = new LWBRA(filePath);
+                        return bra;
+                }
+            } catch(Exception ex) {
+                return ex;
+            }
+
+            return null;
         }
     }
 }

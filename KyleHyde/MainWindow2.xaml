@@ -1,0 +1,157 @@
+﻿<Window
+    x:Class="KyleHyde.MainWindow2"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:control="clr-namespace:WpfHexaEditor;assembly=WPFHexaEditor"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:KyleHyde"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="KyleHyde (Hotel Dusk and Last Window)"
+    Width="800"
+    Height="450"
+    mc:Ignorable="d">
+    <DockPanel>
+        <ToolBar
+            Padding="5"
+            Background="#FFBBBBBB"
+            DockPanel.Dock="Top"
+            ToolBarTray.IsLocked="True">
+            <Button
+                x:Name="btnOld"
+                Padding="5"
+                Background="#FFE0FFDE"
+                Content="Old Interface" Click="btnOld_Click" />
+            <Separator Margin="5,2,5,2" Background="Gray" />
+            <Label VerticalAlignment="Center" Content="Load extracted NDS:" />
+            <Button
+                x:Name="BtnLoadHotelDusk"
+                Padding="5"
+                Background="#FFFFEBEB"
+                Click="BtnLoadHotelDusk_Click"
+                Content="Hotel Dusk" />
+            <Button
+                x:Name="BtnLoadLastWindow"
+                Padding="5"
+                Background="#FFDCE9FF"
+                Click="BtnLoadLastWindow_Click"
+                Content="Last Window" />
+            <Separator Margin="5,2,5,2" Background="Gray" />
+            <Label VerticalAlignment="Center" Content="Filter:" />
+            <TextBox
+                x:Name="txtFilter"
+                Width="100"
+                VerticalAlignment="Center"
+                TextChanged="txtFilter_TextChanged" />
+            <Grid Margin="5,0,0,0">
+                <CheckBox
+                    Name="chkHidePacked"
+                    VerticalAlignment="Center"
+                    Checked="chkHidePacked_Changed"
+                    Content="Hide Packed"
+                    Unchecked="chkHidePacked_Changed" />
+            </Grid>
+        </ToolBar>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <DataGrid
+                x:Name="dataGrid"
+                AlternatingRowBackground="#FFE6E6E6"
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
+                ItemsSource="{Binding ListData, Mode=OneWay}"
+                SelectionChanged="dataGrid_SelectionChanged">
+                <DataGrid.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{Binding Path=Color, Source={x:Static SystemColors.HighlightBrush}}" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="White" />
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Relative}" Header="File" />
+                    <DataGridTextColumn Binding="{Binding Ext}" Header="Ext" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <GridSplitter
+                Grid.Column="1"
+                Width="10"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
+                ResizeDirection="Columns" />
+            <TabControl Name="tabControl" Grid.Column="2">
+                <TabItem Name="tabHex" Header="Hex">
+                    <Grid>
+                        <control:HexEditor
+                            Name="hexEditor"
+                            Focusable="False"
+                            ReadOnlyMode="True" />
+                    </Grid>
+                </TabItem>
+                <TabItem Name="tabText" Header="Text">
+                    <Grid>
+                        <TextBox
+                            x:Name="txtText"
+                            HorizontalScrollBarVisibility="Auto"
+                            VerticalScrollBarVisibility="auto" />
+                    </Grid>
+                </TabItem>
+                <TabItem Name="tabImage" Header="Image">
+                    <Border x:Name="brdImage">
+                        <Grid Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                                <Button
+                                    x:Name="btnImageSave"
+                                    Margin="0,0,5,0"
+                                    Padding="5,5,5,5"
+                                    HorizontalAlignment="Left"
+                                    Click="btnImageSave_Click"
+                                    Content="Save" />
+                                <Button
+                                    x:Name="btnImagePlayPause"
+                                    Margin="0,0,5,0"
+                                    Click="btnImagePlayPause_Click"
+                                    Content="Play/Pause" />
+                                <Button
+                                    x:Name="btnImageSpeed50"
+                                    Margin="0,0,5,0"
+                                    Click="btnImageSpeed50_Click"
+                                    Content="Speed 50" />
+                                <Button
+                                    x:Name="btnImageSpeed100"
+                                    Margin="0,0,5,0"
+                                    Click="btnImageSpeed100_Click"
+                                    Content="100" />
+                                <Button
+                                    x:Name="btnImageSpeed150"
+                                    Margin="0,0,5,0"
+                                    Click="btnImageSpeed150_Click"
+                                    Content="150" />
+                                <Button
+                                    x:Name="btnImageBgLight"
+                                    Margin="0,0,5,0"
+                                    Click="btnImageBgLight_Click"
+                                    Content="BG Light" />
+                                <Button
+                                    x:Name="btnImageBgDark"
+                                    Click="btnImageBgDark_Click"
+                                    Content="Dark" />
+                            </StackPanel>
+                            <Image
+                                x:Name="imageBox"
+                                Grid.Row="1"
+                                Stretch="None"
+                                StretchDirection="DownOnly" />
+                        </Grid>
+                    </Border>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </DockPanel>
+</Window>

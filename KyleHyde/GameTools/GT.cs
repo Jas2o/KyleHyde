@@ -5,7 +5,7 @@ using System.Text;
 namespace GameTools {
     public static class GT {
 
-        public static bool EnableGTFSView = true;
+        public static bool EnableGTFSView = false;
 
         public static byte ReadByte(GTFS fs) {
             if (EnableGTFSView)

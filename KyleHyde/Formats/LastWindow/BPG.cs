@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace KyleHyde.Formats.LastWindow
 {
-    class BPG
+    public class BPG
     {
 
         public int Width, Height;
@@ -46,6 +46,9 @@ namespace KyleHyde.Formats.LastWindow
                 if (profile.TileSize > 0) { tileWidth = profile.TileSize; tileHeight = profile.TileSize; }
             }
 
+            if(Width == 0 || tileWidth == 0 || Height == 0 || tileHeight == 0)
+                throw new System.Exception("Cannot divide by zero");
+
             int numTilesX = Width / tileWidth;
             int numTilesY = Height / tileHeight;
 
@@ -78,7 +81,7 @@ namespace KyleHyde.Formats.LastWindow
 
     }
 
-    internal class BpgProfile
+    public class BpgProfile
     {
         public int Width;
         public int Height;
