@@ -8,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Windows;
+using System.Windows.Markup;
 
 namespace KyleHyde.Formats.LastWindow {
     public class Loader : GameTools.Loader {
@@ -113,11 +114,16 @@ namespace KyleHyde.Formats.LastWindow {
             FileStream fsComp = new FileStream(file, FileMode.Open);
             int uncomLen = GT.ReadInt32(fsComp, 4, false);
             fsComp.Position += 2;
-            using (DeflateStream decompressionStream = new DeflateStream(fsComp, CompressionMode.Decompress)) {
-                byte[] raw = new byte[uncomLen];
-                decompressionStream.Read(raw, 0, uncomLen);
+
+            byte[] raw = new byte[uncomLen];
+            using (MemoryStream decompressedStream = new MemoryStream()) {
+                using (DeflateStream decompressionStream = new DeflateStream(fsComp, CompressionMode.Decompress)) {
+                    decompressionStream.CopyTo(decompressedStream);
+                }
+                raw = decompressedStream.ToArray();
                 fs = new GTFS(raw);
             }
+
             fsComp.Close();
 
             return fs;
