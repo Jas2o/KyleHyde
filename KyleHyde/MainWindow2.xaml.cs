@@ -111,10 +111,12 @@ namespace KyleHyde {
                 tabControl.SelectedItem = tabImage;
             } else if (result is KyleHyde.Formats.LastWindow.BPG) {
                 bmps = new Bitmap[] { (result as KyleHyde.Formats.LastWindow.BPG).bitmap };
+                hexEditor.Stream = (result as KyleHyde.Formats.LastWindow.BPG).GTFS.GetStream();
                 DisplayBitmap();
                 tabControl.SelectedItem = tabImage;
             } else if (result is KyleHyde.Formats.LastWindow.EBP) {
                 bmps = new Bitmap[] { (result as KyleHyde.Formats.LastWindow.EBP).bitmap };
+                hexEditor.Stream = (result as KyleHyde.Formats.LastWindow.EBP).GTFS.GetStream();
                 DisplayBitmap();
                 tabControl.SelectedItem = tabImage;
             } else if (result is KyleHyde.Formats.LastWindow.LWBRA) {

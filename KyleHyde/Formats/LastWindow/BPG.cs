@@ -6,7 +6,7 @@ namespace KyleHyde.Formats.LastWindow
 {
     public class BPG
     {
-
+        public GTFS GTFS { get; private set; }
         public int Width, Height;
         public Bitmap bitmap;
 
@@ -26,7 +26,7 @@ namespace KyleHyde.Formats.LastWindow
 
         public BPG(GTFS fs, string name)
         {
-
+            GTFS = fs;
             bool flip = false;
             byte[] magic = GT.ReadBytes(fs, 4, flip); //BPG1
             int paletteNum = GT.ReadInt16(fs, 2, flip);

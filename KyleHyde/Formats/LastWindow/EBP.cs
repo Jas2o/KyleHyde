@@ -6,12 +6,13 @@ namespace KyleHyde.Formats.LastWindow
 {
     class EBP
     {
-
+        public GTFS GTFS { get; private set; }
         public int Width, Height;
         public Bitmap bitmap;
 
         public EBP(GTFS fs)
         {
+            GTFS = fs;
             bool flip = false;
 
             Width = GT.ReadInt32(fs, 4, flip);
