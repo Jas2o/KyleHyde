@@ -20,7 +20,8 @@
                 x:Name="btnOld"
                 Padding="5"
                 Background="#FFE0FFDE"
-                Content="Old Interface" Click="btnOld_Click" />
+                Click="btnOld_Click"
+                Content="Old Interface" />
             <Separator Margin="5,2,5,2" Background="Gray" />
             <Label VerticalAlignment="Center" Content="Load extracted NDS:" />
             <Button
@@ -83,9 +84,23 @@
                 ResizeDirection="Columns" />
             <TabControl Name="tabControl" Grid.Column="2">
                 <TabItem Name="tabHex" Header="Hex">
-                    <Grid>
+                    <Grid Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                            <Button
+                                x:Name="btnHexSave"
+                                Margin="0,0,5,0"
+                                Padding="5,5,5,5"
+                                HorizontalAlignment="Left"
+                                Click="btnHexSave_Click"
+                                Content="Save" />
+                        </StackPanel>
                         <control:HexEditor
                             Name="hexEditor"
+                            Grid.Row="1"
                             Focusable="False"
                             ReadOnlyMode="True" />
                     </Grid>
@@ -105,7 +120,7 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
-                            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                            <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                                 <Button
                                     x:Name="btnImageSave"
                                     Margin="0,0,5,0"

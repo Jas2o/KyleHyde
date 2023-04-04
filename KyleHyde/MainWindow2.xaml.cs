@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ookii.Dialogs.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -36,11 +37,11 @@ namespace KyleHyde {
         }
 
         private void BtnLoadHotelDusk_Click(object sender, RoutedEventArgs e) {
-            dataview.Clear();
-            loader = new Formats.HotelDusk.Loader();
-
-            var dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
+            var dialog = new VistaFolderBrowserDialog();
             if (dialog.ShowDialog(this).GetValueOrDefault()) {
+                dataview.Clear();
+                loader = new Formats.HotelDusk.Loader();
+
                 string folder = dialog.SelectedPath;
 
                 string[] files = Directory.GetFiles(folder, "*", SearchOption.AllDirectories);
@@ -51,11 +52,11 @@ namespace KyleHyde {
         }
 
         private void BtnLoadLastWindow_Click(object sender, RoutedEventArgs e) {
-            dataview.Clear();
-            loader = new Formats.LastWindow.Loader();
-
-            var dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
+            var dialog = new VistaFolderBrowserDialog();
             if (dialog.ShowDialog(this).GetValueOrDefault()) {
+                dataview.Clear();
+                loader = new Formats.LastWindow.Loader();
+
                 string folder = dialog.SelectedPath;
 
                 string[] files = Directory.GetFiles(folder, "*", SearchOption.AllDirectories);
@@ -80,18 +81,21 @@ namespace KyleHyde {
                 return;
 
             object result = loader.Open2(item.File);
+            if (result is GameTools.GTFS)
+                hexEditor.Stream = (result as GameTools.GTFS).GetStream();
+            else
+                hexEditor.Stream = item.GTFS.GetStream();
+            //--
+            
             if (result == null) {
                 //Debug.WriteLine(item.File);
-                hexEditor.Stream = item.GTFS.GetStream();
                 tabControl.SelectedItem = tabHex;
             } else if (result is Exception) {
                 //MessageBox.Show((result as Exception).Message, "Exception");
                 txtText.Text = (result as Exception).Message;
-                hexEditor.Stream = item.GTFS.GetStream();
                 //tabControl.SelectedItem = tabHex;
                 tabControl.SelectedItem = tabText;
             } else if (result is GameTools.GTFS) {
-                hexEditor.Stream = (result as GameTools.GTFS).GetStream();
                 tabControl.SelectedItem = tabHex;
             } else if (result is KyleHyde.Formats.HotelDusk.FRM) {
                 bmps = new Bitmap[] { (result as KyleHyde.Formats.HotelDusk.FRM).bitmap };
@@ -118,8 +122,6 @@ namespace KyleHyde {
                 DisplayBitmaps();
                 tabControl.SelectedItem = tabImage;
             }
-
-            //hexEditor.Stream = item.GTFS.GetStream();
         }
 
         private void Filter() {
@@ -191,6 +193,8 @@ namespace KyleHyde {
 
         private void btnImageSave_Click(object sender, RoutedEventArgs e) {
             FileListItem item = dataGrid.SelectedItem as FileListItem;
+            if (item == null)
+                return;
             string fileNameNoExt = Path.GetFileNameWithoutExtension(item.File);
 
             Directory.CreateDirectory(@".\Export");
@@ -227,6 +231,23 @@ namespace KyleHyde {
 
         private void btnOld_Click(object sender, RoutedEventArgs e) {
             new MainWindow().Show();
+        }
+
+        private void btnHexSave_Click(object sender, RoutedEventArgs e) {
+            FileListItem item = dataGrid.SelectedItem as FileListItem;
+            if (item == null)
+                return;
+            string fileNameNoExt = Path.GetFileNameWithoutExtension(item.File);
+
+            VistaSaveFileDialog dialog = new VistaSaveFileDialog();
+            dialog.Filter = "Binary files (*.bin)|*.bin|All files (*.*)|*.*";
+            dialog.DefaultExt = "bin";
+            dialog.FileName = fileNameNoExt + "_out";
+
+            if ((bool)dialog.ShowDialog(this)) {
+                byte[] bytes = hexEditor.GetAllBytes();
+                File.WriteAllBytes(dialog.FileName, bytes);
+            }
         }
     }
 }

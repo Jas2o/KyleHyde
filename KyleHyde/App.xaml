@@ -1,8 +1,8 @@
 ﻿<Application
-    x:Class="LastWindow.App"
+    x:Class="KyleHyde.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:LastWindow"
-    StartupUri="MainWindow2.xaml">
+    xmlns:local="clr-namespace:KyleHyde"
+    Startup="Application_Startup">
     <Application.Resources />
 </Application>
