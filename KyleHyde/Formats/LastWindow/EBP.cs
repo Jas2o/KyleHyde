@@ -56,9 +56,9 @@ namespace KyleHyde.Formats.LastWindow
                 palette = new Color[numPal];
                 for (int i = 0; i < numPal; i++)
                 {
-                    byte red = GT.ReadByte(fs);
-                    byte green = GT.ReadByte(fs);
                     byte blue = GT.ReadByte(fs);
+                    byte green = GT.ReadByte(fs);
+                    byte red = GT.ReadByte(fs);
                     byte alpha = GT.ReadByte(fs);
                     palette[i] = Color.FromArgb(255 - alpha, red, green, blue);
                 }

@@ -155,7 +155,7 @@ namespace KyleHyde.Formats.LastWindow {
 
                     case "EBP":
                         fs = Decompress(filePath);
-                        BPG ebp = new BPG(fs, fileName.ToLower());
+                        EBP ebp = new EBP(fs);
                         return ebp;
 
                     case "BRA":
