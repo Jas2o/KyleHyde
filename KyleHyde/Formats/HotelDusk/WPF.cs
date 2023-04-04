@@ -6,7 +6,7 @@ using System.Text;
 
 namespace KyleHyde.Formats.HotelDusk {
     static class WPF {
-        public static string extract_path = @".\Extract";
+        public static string extract_path = @".\GT-HotelDusk\Extract";
 
         public static void Open(string file) {
             bool flip = false;

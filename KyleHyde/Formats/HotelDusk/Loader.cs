@@ -14,6 +14,10 @@ namespace KyleHyde.Formats.HotelDusk {
         //filePath = "";
         //openFileDialog.Filter = "All Hotel Dusk|*.anm;*.frm;*.wpf;*.bin;*.txt;*.dtx|All Files (*.*)|*.*";
 
+        public Loader() {
+            PackExtension = ".wpf";
+        }
+
         public override void Open(string filePath, bool export = false) {
             string fileName = Path.GetFileName(filePath);
             string fileNameNoExt = Path.GetFileNameWithoutExtension(filePath);
@@ -33,9 +37,7 @@ namespace KyleHyde.Formats.HotelDusk {
                 new WindowImageAnimated(anm.BitmapsBlended(), fileNameNoExt).Show();
 
             } else if (filenameParts[0].ToUpper() == "WPF") {
-                //WPF.Open(filePath);
-                //throw new NotImplementedException();
-                MessageBox.Show(".wpf not supported");
+                WPF.Open(filePath);
             } else if (filenameParts[0].ToUpper() == "WPFBIN" || filenameParts[0].ToUpper() == "BIN") {
                 GTFS fs = new GTFS(filePath);
 
@@ -103,6 +105,20 @@ namespace KyleHyde.Formats.HotelDusk {
                 GTFS fs;
                 string extUpper = filenameParts[0].ToUpper();
                 switch (extUpper) {
+                    case "WPF":
+                        //Packed
+                        return null;
+
+                    case "BIN":
+                    case "WPFBIN":
+                        fs = new GTFS(filePath);
+                        byte[] magic = GT.ReadBytes(fs, 4, false);
+                        fs.Position = 0;
+                        if (magic.SequenceEqual(LRIM.Magic))
+                            return new LRIM(fs);
+                        else
+                            return new WPFBIN(fs);
+
                     case "FRM":
                         fs = new GTFS(filePath);
                         FRM frm = new FRM(fs);
