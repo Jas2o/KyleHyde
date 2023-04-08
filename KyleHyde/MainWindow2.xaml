@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:KyleHyde"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="KyleHyde (Hotel Dusk and Last Window)"
+    Title="KyleHyde"
     Width="800"
     Height="450"
     mc:Ignorable="d">
@@ -22,6 +22,12 @@
                 Background="#FFE0FFDE"
                 Click="btnOld_Click"
                 Content="Old Interface" />
+            <Button
+                x:Name="btnCompare"
+                Padding="5"
+                Background="#FFBFFFFE"
+                Click="btnCompare_Click"
+                Content="Compare" />
             <Separator Margin="5,2,5,2" Background="Gray" />
             <Label VerticalAlignment="Center" Content="Load extracted NDS:" />
             <Button

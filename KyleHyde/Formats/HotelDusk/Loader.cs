@@ -102,37 +102,36 @@ namespace KyleHyde.Formats.HotelDusk {
             Array.Reverse(filenameParts);
 
             try {
-                GTFS fs;
+                GTFS fs = new GTFS(filePath);
                 string extUpper = filenameParts[0].ToUpper();
                 switch (extUpper) {
                     case "WPF":
-                        //Packed
-                        return null;
+                        //Packed, use the old interface for now
+                        return fs;
 
                     case "BIN":
                     case "WPFBIN":
-                        fs = new GTFS(filePath);
                         byte[] magic = GT.ReadBytes(fs, 4, false);
                         fs.Position = 0;
                         if (magic.SequenceEqual(LRIM.Magic))
                             return new LRIM(fs);
                         else
                             return new WPFBIN(fs);
+                    case "DTX":
+                        WPFBIN wpfbin = new WPFBIN(fs);
+                        return wpfbin;
 
                     case "FRM":
-                        fs = new GTFS(filePath);
                         FRM frm = new FRM(fs);
                         return frm;
 
                     case "ANM":
-                        fs = new GTFS(filePath);
                         ANM anm = new ANM(fs);
                         return anm;
 
-                    case "DTX":
-                        fs = new GTFS(filePath);
-                        WPFBIN wpfbin = new WPFBIN(fs);
-                        return wpfbin;
+                    case "TXT":
+                        GTFS decompressed = Decompress.ToGTFS(fs);
+                        return decompressed;
                 }
             } catch (Exception ex) {
                 return ex;

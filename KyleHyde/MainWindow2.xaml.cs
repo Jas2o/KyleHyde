@@ -251,5 +251,10 @@ namespace KyleHyde {
                 File.WriteAllBytes(dialog.FileName, bytes);
             }
         }
+
+        private void btnCompare_Click(object sender, RoutedEventArgs e) {
+            WindowCompare winCompare = new WindowCompare();
+            winCompare.Show();
+        }
     }
 }
