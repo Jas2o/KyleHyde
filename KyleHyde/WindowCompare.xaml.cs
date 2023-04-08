@@ -44,12 +44,15 @@ namespace KyleHyde {
             var dialog = new VistaFolderBrowserDialog();
             if (dialog.ShowDialog(this).GetValueOrDefault()) {
                 dataviewTopL.Clear();
+                bool alsoAddToBottom = (dataviewBottomR.ListDataRaw.Count == 0);
 
                 string folder = dialog.SelectedPath;
 
                 string[] files = Directory.GetFiles(folder, "*", SearchOption.AllDirectories);
                 foreach (string file in files) {
                     dataviewTopL.Add(file, folder);
+                    if(alsoAddToBottom)
+                        dataviewBottomR.Add(file, folder);
                 }
             }
         }
@@ -58,12 +61,15 @@ namespace KyleHyde {
             var dialog = new VistaFolderBrowserDialog();
             if (dialog.ShowDialog(this).GetValueOrDefault()) {
                 dataviewBottomR.Clear();
+                bool alsoAddToTop = (dataviewTopL.ListDataRaw.Count == 0);
 
                 string folder = dialog.SelectedPath;
 
                 string[] files = Directory.GetFiles(folder, "*", SearchOption.AllDirectories);
                 foreach (string file in files) {
                     dataviewBottomR.Add(file, folder);
+                    if (alsoAddToTop)
+                        dataviewTopL.Add(file, folder);
                 }
             }
         }
@@ -102,12 +108,15 @@ namespace KyleHyde {
             int minWidth = Math.Min(bmpL.Width, bmpR.Width);
             int minHeight = Math.Min(bmpL.Height, bmpR.Height);
 
+            int offX = (int)numX.Value;
+            int offY = (int)numY.Value;
+
             try {
                 for (int x = 0; x < minWidth; x++) {
                     for (int y = 0; y < minHeight; y++) {
                     
                             var left = bmpL.GetPixel(x, y);
-                            var right = bmpR.GetPixel(x, y);
+                            var right = bmpR.GetPixel(x + offX, y + offY);
 
                             if (left.A == 0 && right.A == 0)
                                 continue;
@@ -134,6 +143,10 @@ namespace KyleHyde {
 
                 imageBoxD.Source = bitmap;
             }
+        }
+
+        private void btnRun_Click(object sender, RoutedEventArgs e) {
+            DoCompare();
         }
     }
 }

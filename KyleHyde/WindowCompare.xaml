@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:KyleHyde"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:numeric="http://gu.se/NumericInput"
     Title="KyleHyde - Image Compare"
     Width="900"
     Height="450"
@@ -77,6 +78,32 @@
             StretchDirection="DownOnly" />
 
         <Label Grid.Column="4" Content="Difference" />
+        <StackPanel
+            Grid.Row="1"
+            Grid.Column="4"
+            VerticalAlignment="Top"
+            Orientation="Horizontal">
+            <Label Content="X:" />
+            <numeric:SpinnerDecorator>
+                <numeric:IntBox
+                    Name="numX"
+                    Width="24"
+                    AllowSpinners="True"
+                    Value="0" />
+            </numeric:SpinnerDecorator>
+            <Label Content="Y:" />
+            <numeric:SpinnerDecorator>
+                <numeric:IntBox
+                    Name="numY"
+                    Width="24"
+                    AllowSpinners="True"
+                    Value="0" />
+            </numeric:SpinnerDecorator>
+            <Button
+                x:Name="btnRun"
+                Click="btnRun_Click"
+                Content="Run" />
+        </StackPanel>
         <Image
             x:Name="imageBoxD"
             Grid.Row="1"
