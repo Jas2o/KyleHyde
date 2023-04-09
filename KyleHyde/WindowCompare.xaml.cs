@@ -114,16 +114,17 @@ namespace KyleHyde {
             try {
                 for (int x = 0; x < minWidth; x++) {
                     for (int y = 0; y < minHeight; y++) {
-                    
-                            var left = bmpL.GetPixel(x, y);
-                            var right = bmpR.GetPixel(x + offX, y + offY);
+                        var left = bmpL.GetPixel(x, y);
+                        var right = bmpR.GetPixel(x + offX, y + offY);
 
-                            if (left.A == 0 && right.A == 0)
-                                continue;
-                            if (left != right) {
-                                compare.SetPixel(x, y, System.Drawing.Color.Red);
-                                dataviewCompare.Add(x, y, left, right);
-                            }
+                        if (left.A == 0 && right.A == 0)
+                            continue;
+                        if (left != right) {
+                            compare.SetPixel(x, y, System.Drawing.Color.Red);
+                            dataviewCompare.Add(x, y, left, right);
+                        } else {
+                            compare.SetPixel(x, y, System.Drawing.Color.LightGray);
+                        }
                     }
                 }
             } catch (Exception ex) {

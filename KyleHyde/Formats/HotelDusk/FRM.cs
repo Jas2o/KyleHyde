@@ -1,6 +1,7 @@
 ﻿using GameTools;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 
@@ -173,20 +174,22 @@ namespace KyleHyde.Formats.HotelDusk {
             ushort hex = Tools.SwapBytes(palette);
 
             int R0 = (hex & 0x1F);
-            int R = (R0 << 3) | (R0 >> 2);
             int G0 = (hex >> 5 & 0x1F);
-            int G = (G0 << 3) | (G0 >> 2);
             int B0 = (hex >> 10 & 0x1F);
+            int R = (R0 << 3) | (R0 >> 2);
+            int G = (G0 << 3) | (G0 >> 2);
             int B = (B0 << 3) | (B0 >> 2);
 
-            /* //Previous
-            int R = (hex & 0x1F) * 8;
-            int G = (hex >> 5 & 0x1F) * 8;
-            int B = (hex >> 10 & 0x1F) * 8;
+            /*
+            //Same results
+            int R0 = (hex % 32) * 8;
+            int G0 = ((hex / 32) % 32) * 8;
+            int B0 = ((hex / 1024) % 32) * 8;
+            //Allow values like 248 to go to 255
+            int B = B0 + B0 / 32;
+            int R = R0 + R0 / 32;
+            int G = G0 + G0 / 32;
             */
-
-            //int A = (hex >> 15 & 0x01) * 255;
-            //return Color.FromArgb(255-A, R, G, B);
 
             return Color.FromArgb(R, G, B);
         }

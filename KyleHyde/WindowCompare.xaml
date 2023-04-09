@@ -8,21 +8,23 @@
     xmlns:numeric="http://gu.se/NumericInput"
     Title="KyleHyde - Image Compare"
     Width="900"
-    Height="450"
+    Height="500"
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="5" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="5" />
             <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
             <ColumnDefinition Width="5" />
             <ColumnDefinition />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="1.2*" />
         </Grid.ColumnDefinitions>
 
         <StackPanel Orientation="Horizontal">
@@ -35,47 +37,47 @@
                 Click="btnBottomR_Click"
                 Content="Bottom R" />
         </StackPanel>
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition Height="5" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
 
-            <ListBox
-                x:Name="listTopL"
-                DisplayMemberPath="Relative"
-                ItemsSource="{Binding ListData, Mode=OneWay}"
-                SelectionChanged="listTopL_SelectionChanged" />
-            <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" />
-            <ListBox
-                x:Name="listBottomR"
-                Grid.Row="2"
-                DisplayMemberPath="Relative"
-                ItemsSource="{Binding ListData, Mode=OneWay}"
-                SelectionChanged="listBottomR_SelectionChanged" />
-        </Grid>
+        <ListBox
+            x:Name="listTopL"
+            Grid.Row="1"
+            DisplayMemberPath="Relative"
+            ItemsSource="{Binding ListData, Mode=OneWay}"
+            SelectionChanged="listTopL_SelectionChanged" />
+        <GridSplitter
+            Grid.Row="2"
+            Grid.ColumnSpan="3"
+            HorizontalAlignment="Stretch" />
+        <ListBox
+            x:Name="listBottomR"
+            Grid.Row="3"
+            DisplayMemberPath="Relative"
+            ItemsSource="{Binding ListData, Mode=OneWay}"
+            SelectionChanged="listBottomR_SelectionChanged" />
 
         <GridSplitter
-            Grid.RowSpan="2"
+            Grid.RowSpan="4"
             Grid.Column="1"
             HorizontalAlignment="Stretch" />
 
-        <Label Grid.Column="2" Content="Top L" />
+        <Label Grid.Column="2" Content="Inputs" />
         <Image
             x:Name="imageBoxL"
             Grid.Row="1"
             Grid.Column="2"
             Stretch="None"
             StretchDirection="DownOnly" />
-
-        <Label Grid.Column="3" Content="Bottom R" />
         <Image
             x:Name="imageBoxR"
-            Grid.Row="1"
-            Grid.Column="3"
+            Grid.Row="3"
+            Grid.Column="2"
             Stretch="None"
             StretchDirection="DownOnly" />
+
+        <GridSplitter
+            Grid.RowSpan="4"
+            Grid.Column="3"
+            HorizontalAlignment="Stretch" />
 
         <Label Grid.Column="4" Content="Difference" />
         <StackPanel
@@ -107,31 +109,35 @@
         <Image
             x:Name="imageBoxD"
             Grid.Row="1"
+            Grid.RowSpan="3"
             Grid.Column="4"
             Stretch="None"
             StretchDirection="DownOnly" />
 
         <GridSplitter
-            Grid.RowSpan="2"
+            Grid.RowSpan="4"
             Grid.Column="5"
             HorizontalAlignment="Stretch" />
 
-        <Label Grid.Column="6" Content="Log" />
+        <Label Grid.Column="6" Content="Difference Log" />
         <DataGrid
             x:Name="dataCompare"
             Grid.Row="1"
+            Grid.RowSpan="3"
             Grid.Column="6"
-            AlternatingRowBackground="#FFE6E6E6"
+            AlternatingRowBackground="#FFF0F0F0"
             AutoGenerateColumns="False"
             IsReadOnly="True"
             ItemsSource="{Binding ListData, Mode=OneWay}">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding X}" Header="X" />
                 <DataGridTextColumn Binding="{Binding Y}" Header="Y" />
+                <DataGridTextColumn Header="-" />
                 <DataGridTextColumn Binding="{Binding LA}" Header="A" />
                 <DataGridTextColumn Binding="{Binding LR}" Header="R" />
                 <DataGridTextColumn Binding="{Binding LG}" Header="G" />
                 <DataGridTextColumn Binding="{Binding LB}" Header="B" />
+                <DataGridTextColumn Header="-" />
                 <DataGridTextColumn Binding="{Binding RA}" Header="A" />
                 <DataGridTextColumn Binding="{Binding RR}" Header="R" />
                 <DataGridTextColumn Binding="{Binding RG}" Header="G" />
