@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Nucs.JsonSettings;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,6 +14,8 @@ namespace KyleHyde {
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application {
+
+        public static Settings Settings;
 
         public App() : base() {
             if (Debugger.IsAttached) {
@@ -40,6 +44,12 @@ namespace KyleHyde {
                         ShowUnhandledException(args.Exception, "Dispatcher.UnhandledException");
                 };
             }
+
+            string pathSettings = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\KyleHyde-config.json";
+            if (File.Exists(pathSettings))
+                Settings = JsonSettings.Load<Settings>(pathSettings);
+            else
+                Settings = JsonSettings.Construct<Settings>(pathSettings);
         }
 
         public static void ShowUnhandledExceptionFromSrc(Exception e, string source) {

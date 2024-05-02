@@ -92,6 +92,12 @@ namespace KyleHyde.Formats.LastWindow {
 
                 //string inputtext = LWBRA.Open(filePath, export);
                 //new FormText(inputtext).Show();
+            } else if (filenameParts[0].ToUpper() == "MTC") {
+                GTFS fs = new GTFS(filePath, true);
+                MTC mtc = new MTC(fs);
+                Bitmap[] bitmaps = mtc.GetBitmaps();
+                new WindowImageAnimated(bitmaps, fileNameNoExt).Show();
+
             } else if (filenameParts[0].ToUpper() == "PACK") {
                 LWPack.OpenPack(filePath, fileName);
             } else {
@@ -161,6 +167,11 @@ namespace KyleHyde.Formats.LastWindow {
                     case "BRA":
                         LWBRA bra = new LWBRA(filePath);
                         return bra;
+
+                    case "MTC":
+                        fs = new GTFS(filePath, true);
+                        MTC mtc = new MTC(fs);
+                        return mtc;
                 }
             } catch(Exception ex) {
                 return ex;

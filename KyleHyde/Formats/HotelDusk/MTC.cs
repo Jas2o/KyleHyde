@@ -18,10 +18,9 @@ namespace KyleHyde.Formats.HotelDusk {
 
             //--
 
-            bool flip = false;
-            numFrames = GT.ReadInt32(fs, 4, flip);
-            anmWidth = GT.ReadInt16(fs, 2, flip);
-            anmHeight = GT.ReadInt16(fs, 2, flip);
+            numFrames = GT.ReadInt32(fs, 4);
+            anmWidth = GT.ReadInt16(fs, 2);
+            anmHeight = GT.ReadInt16(fs, 2);
             fs.Position += 24;
 
             listFrames = new List<MTCFrame>();

@@ -13,10 +13,17 @@ namespace KyleHyde {
         public FileListItem(string file, string relativeTo) {
             File = file;
 
-            Relative = Path.GetRelativePath(relativeTo, file);
-            Ext = Path.GetExtension(file);
+            if(File == "") {
+                Relative = "";
+                Ext = "";
+            }
+            else
+            {
+                Relative = Path.GetRelativePath(relativeTo, file);
+                Ext = Path.GetExtension(file);
 
-            GTFS = new GTFS(file, false);
+                GTFS = new GTFS(file, false);
+            }
         }
     }
 }

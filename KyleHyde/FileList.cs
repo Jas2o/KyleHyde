@@ -10,15 +10,20 @@ namespace KyleHyde {
 
         public List<FileListItem> ListDataRaw { get; set; }
         public ObservableCollection<FileListItem> ListData { get; set; }
+        public ObservableCollection<FileListItem> ListDataMTC { get; set; }
 
         public FileList() {
             ListDataRaw = new List<FileListItem>();
             ListData = new ObservableCollection<FileListItem>();
+            ListDataMTC = new ObservableCollection<FileListItem>();
+            ListDataMTC.Add(new FileListItem("", ""));
         }
 
         public void Clear() {
             ListDataRaw.Clear();
             ListData.Clear();
+            ListDataMTC.Clear();
+            ListDataMTC.Add(new FileListItem("", ""));
         }
 
         public FileListItem Add(string file, string relativeTo) {
@@ -26,6 +31,9 @@ namespace KyleHyde {
             App.Current.Dispatcher.Invoke(new Action(() => {
                 ListDataRaw.Add(di);
                 ListData.Add(di);
+
+                if (file.IndexOf(".mtc", StringComparison.OrdinalIgnoreCase) >= 0)
+                    ListDataMTC.Add(di);
             }));
             return di;
         }

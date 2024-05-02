@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
 namespace KyleHyde {
@@ -65,6 +66,33 @@ namespace KyleHyde {
                 if (i == 0)
                     Process.Start("explorer.exe", "/select, \"" + outfile + "\"");
             }
+        }
+
+        private void btnImagePlayPause_Click(object sender, RoutedEventArgs e) {
+            if (dispatcherTimer.IsEnabled)
+                dispatcherTimer.Stop();
+            else
+                dispatcherTimer.Start();
+        }
+
+        private void btnImageSpeed50_Click(object sender, RoutedEventArgs e) {
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+        }
+
+        private void btnImageSpeed100_Click(object sender, RoutedEventArgs e) {
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+        }
+
+        private void btnImageSpeed150_Click(object sender, RoutedEventArgs e) {
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 150);
+        }
+
+        private void btnImageBgLight_Click(object sender, RoutedEventArgs e) {
+            brdImage.Background = null;
+        }
+
+        private void btnImageBgDark_Click(object sender, RoutedEventArgs e) {
+            brdImage.Background = System.Windows.Media.Brushes.Gray;
         }
     }
 }

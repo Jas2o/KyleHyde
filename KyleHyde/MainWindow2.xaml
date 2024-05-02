@@ -7,14 +7,17 @@
     xmlns:local="clr-namespace:KyleHyde"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="KyleHyde"
-    Width="800"
+    Width="904"
     Height="450"
+    Closing="Window_Closing"
+    Loaded="Window_Loaded"
     mc:Ignorable="d">
-    <DockPanel>
+    <DockPanel Background="#FFF0F0F0">
         <ToolBar
             Padding="5"
             Background="#FFBBBBBB"
             DockPanel.Dock="Top"
+            ToolBar.OverflowMode="Never"
             ToolBarTray.IsLocked="True">
             <Button
                 x:Name="btnOld"
@@ -43,30 +46,44 @@
                 Click="BtnLoadLastWindow_Click"
                 Content="Last Window" />
             <Separator Margin="5,2,5,2" Background="Gray" />
-            <Label VerticalAlignment="Center" Content="Filter:" />
-            <TextBox
-                x:Name="txtFilter"
-                Width="100"
-                VerticalAlignment="Center"
-                TextChanged="txtFilter_TextChanged" />
-            <Grid Margin="5,0,0,0">
-                <CheckBox
-                    Name="chkHidePacked"
-                    VerticalAlignment="Center"
-                    Checked="chkHidePacked_Changed"
-                    Content="Hide Packed"
-                    Unchecked="chkHidePacked_Changed" />
-            </Grid>
+            <Button
+                x:Name="btnOpenExplorerToExport"
+                Padding="5"
+                Background="#FFE0E0E0"
+                Click="btnOpenExplorerToExport_Click"
+                Content="Open File Explorer to Export" />
         </ToolBar>
-        <Grid>
+        <Grid Margin="5,0,5,5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="300" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
+            <StackPanel Orientation="Horizontal">
+                <Label VerticalAlignment="Center" Content="Filter:" />
+                <TextBox
+                    x:Name="txtFilter"
+                    Width="100"
+                    VerticalAlignment="Center"
+                    TextChanged="txtFilter_TextChanged" />
+                <Grid Margin="5,0,0,0">
+                    <CheckBox
+                        Name="chkHidePacked"
+                        VerticalAlignment="Center"
+                        Checked="chkHidePacked_Changed"
+                        Content="Hide Packed"
+                        Unchecked="chkHidePacked_Changed" />
+                </Grid>
+            </StackPanel>
+
             <DataGrid
                 x:Name="dataGrid"
+                Grid.Row="1"
                 AlternatingRowBackground="#FFE6E6E6"
                 AutoGenerateColumns="False"
                 IsReadOnly="True"
@@ -82,13 +99,17 @@
                 </DataGrid.Columns>
             </DataGrid>
             <GridSplitter
+                Grid.RowSpan="2"
                 Grid.Column="1"
                 Width="10"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Stretch"
                 VerticalContentAlignment="Stretch"
                 ResizeDirection="Columns" />
-            <TabControl Name="tabControl" Grid.Column="2">
+            <TabControl
+                Name="tabControl"
+                Grid.RowSpan="2"
+                Grid.Column="2">
                 <TabItem Name="tabHex" Header="Hex">
                     <Grid Margin="5">
                         <Grid.RowDefinitions>
@@ -124,51 +145,103 @@
                         <Grid Margin="5">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="5" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="5" />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
-                            <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal">
                                 <Button
                                     x:Name="btnImageSave"
-                                    Margin="0,0,5,0"
+                                    Width="70"
                                     Padding="5,5,5,5"
-                                    HorizontalAlignment="Left"
                                     Click="btnImageSave_Click"
                                     Content="Save" />
+                                <CheckBox
+                                    x:Name="chkMTCUse"
+                                    Margin="0,0,5,0"
+                                    VerticalAlignment="Center"
+                                    Content="With MTC" />
+                                <ComboBox
+                                    x:Name="cmbMTCSelect"
+                                    MinWidth="100"
+                                    Margin="0,0,5,0"
+                                    DisplayMemberPath="Relative"
+                                    ItemsSource="{Binding ListDataMTC, Mode=OneWay}"
+                                    SelectionChanged="cmbMTCSelect_SelectionChanged" />
+                                <CheckBox
+                                    x:Name="chkShowLayers"
+                                    VerticalAlignment="Center"
+                                    Content="Show separate layers" />
+                            </StackPanel>
+                            <StackPanel Grid.Row="2" Orientation="Horizontal">
                                 <Button
                                     x:Name="btnImagePlayPause"
-                                    Margin="0,0,5,0"
+                                    Margin="0,0,0,5"
                                     Click="btnImagePlayPause_Click"
                                     Content="Play/Pause" />
+                                <Label Content="Speed (ms)" />
                                 <Button
                                     x:Name="btnImageSpeed50"
-                                    Margin="0,0,5,0"
+                                    Margin="0,0,0,5"
                                     Click="btnImageSpeed50_Click"
-                                    Content="Speed 50" />
+                                    Content="50" />
                                 <Button
                                     x:Name="btnImageSpeed100"
-                                    Margin="0,0,5,0"
+                                    Margin="0,0,0,5"
                                     Click="btnImageSpeed100_Click"
                                     Content="100" />
                                 <Button
                                     x:Name="btnImageSpeed150"
-                                    Margin="0,0,5,0"
+                                    Margin="0,0,0,5"
                                     Click="btnImageSpeed150_Click"
                                     Content="150" />
                                 <Button
+                                    x:Name="btnImageSpeed200"
+                                    Margin="0,0,0,5"
+                                    Click="btnImageSpeed200_Click"
+                                    Content="200" />
+                                <Label Content="BG" />
+                                <Button
                                     x:Name="btnImageBgLight"
-                                    Margin="0,0,5,0"
+                                    Margin="0,0,0,5"
                                     Click="btnImageBgLight_Click"
-                                    Content="BG Light" />
+                                    Content="Light" />
                                 <Button
                                     x:Name="btnImageBgDark"
+                                    Margin="0,0,0,5"
                                     Click="btnImageBgDark_Click"
                                     Content="Dark" />
+                                <Button
+                                    x:Name="btnImageBgGreen"
+                                    Margin="0,0,0,5"
+                                    Click="btnImageBgGreen_Click"
+                                    Content="Green" />
                             </StackPanel>
-                            <Image
-                                x:Name="imageBox"
-                                Grid.Row="1"
-                                Stretch="None"
-                                StretchDirection="DownOnly" />
+                            <StackPanel
+                                Grid.Row="4"
+                                HorizontalAlignment="Center"
+                                Orientation="Horizontal">
+                                <Image
+                                    x:Name="imageBox"
+                                    MinWidth="192"
+                                    MinHeight="20"
+                                    Stretch="None"
+                                    StretchDirection="DownOnly" />
+                                <Image
+                                    x:Name="imageBoxComposite"
+                                    MinWidth="192"
+                                    MinHeight="20"
+                                    Margin="5,0,5,0"
+                                    Stretch="None"
+                                    StretchDirection="DownOnly" />
+                                <Image
+                                    x:Name="imageBoxMTC"
+                                    MinWidth="192"
+                                    MinHeight="20"
+                                    Stretch="None"
+                                    StretchDirection="DownOnly" />
+                            </StackPanel>
                         </Grid>
                     </Border>
                 </TabItem>
