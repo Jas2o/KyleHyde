@@ -34,7 +34,7 @@ namespace KyleHyde.Formats.HotelDusk {
                 new WindowImageAnimated(anm.BitmapsBlended(), fileNameNoExt).Show();
 
             } else if (filenameParts[0].ToUpper() == "WPF") {
-                WPF.Open(filePath);
+                WPF.Open(filePath, true);
             } else if (filenameParts[0].ToUpper() == "WPFBIN" || filenameParts[0].ToUpper() == "BIN") {
                 GTFS fs = new GTFS(filePath);
 
@@ -93,13 +93,19 @@ namespace KyleHyde.Formats.HotelDusk {
             throw new NotImplementedException();
         }
 
-        public override object Open2(string filePath) {
-            string fileName = Path.GetFileName(filePath);
+        public override object Open2(FileListItem fileItem) {
+            string fileName = Path.GetFileName(fileItem.File);
             string[] filenameParts = fileName.Split('.');
             Array.Reverse(filenameParts);
 
             try {
-                GTFS fs = new GTFS(filePath);
+                GTFS fs = fileItem.GTFS;
+                if (fs == null)
+                    return null; //This can happen from setting MTC to blank
+
+                fs.PrepareByteStream();
+                fs.Position = 0;
+
                 string extUpper = filenameParts[0].ToUpper();
                 switch (extUpper) {
                     case "WPF":
@@ -127,8 +133,16 @@ namespace KyleHyde.Formats.HotelDusk {
                         return anm;
 
                     case "TXT":
-                        GTFS decompressed = Decompress.ToGTFS(fs);
-                        return decompressed;
+                        //123DDA00
+                        if(fs.Length > 4) {
+                            byte[] header = GT.ReadBytes(fs, 4);
+                            fs.Position = 0;
+                            if (header[0] == 0x12 && header[1] == 0x3D && header[2] == 0xDA) {
+                                GTFS decompressed = Decompress.ToGTFS(fs);
+                                return new TXT(decompressed);
+                            }
+                        }
+                        return new TXT(fs);
                 }
             } catch (Exception ex) {
                 return ex;

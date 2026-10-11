@@ -36,5 +36,13 @@ namespace KyleHyde {
             return di;
         }
 
+        public FileListItem AddVirtual(FileListItem parent, Pack packFile) {
+            FileListItem di = new FileListItem(packFile.Filename, parent, packFile.Offset, packFile.Size);
+            App.Current.Dispatcher.Invoke(new Action(() => {
+                ListDataRaw.Add(di);
+                ListData.Add(di);
+            }));
+            return di;
+        }
     }
 }

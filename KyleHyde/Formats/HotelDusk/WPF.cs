@@ -7,7 +7,7 @@ namespace KyleHyde.Formats.HotelDusk {
     static class WPF {
         public static string extract_path = @".\GT-HotelDusk\Extract";
 
-        public static void Open(string file) {
+        public static List<Pack> Open(string file, bool doExtract) {
             bool flip = false;
             GTFS fs = new GTFS(file);
 
@@ -33,16 +33,20 @@ namespace KyleHyde.Formats.HotelDusk {
             string fileName = Path.GetFileName(file);
             string toFolder = fileName.Replace('.', '_');
 
-            if (!Directory.Exists(extract_path))
-                Directory.CreateDirectory(extract_path);
+            if (doExtract) {
+                if (!Directory.Exists(extract_path))
+                    Directory.CreateDirectory(extract_path);
 
-            if (!Directory.Exists(extract_path + "\\" + toFolder))
-                Directory.CreateDirectory(extract_path + "\\" + toFolder);
+                if (!Directory.Exists(extract_path + "\\" + toFolder))
+                    Directory.CreateDirectory(extract_path + "\\" + toFolder);
 
-            foreach (Pack pack in listPack) {
-                string newfile = extract_path + "\\" + toFolder + "\\" + pack.Filename;
-                GT.WriteSubFile(fs, newfile, pack.Size, pack.Offset);
+                foreach (Pack pack in listPack) {
+                    string newfile = extract_path + "\\" + toFolder + "\\" + pack.Filename;
+                    GT.WriteSubFile(fs, newfile, pack.Size, pack.Offset);
+                }
             }
+
+            return listPack;
         }
     }
 }

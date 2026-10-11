@@ -76,7 +76,8 @@ namespace KyleHyde.Formats.LastWindow {
                     }
                 }
             } else if (filenameParts[0].ToUpper() == "BRA") {
-                LWBRA bra = new LWBRA(filePath);
+                GTFS fs = new GTFS(filePath, true);
+                LWBRA bra = new LWBRA(fs);
                 Bitmap[] bitmaps = bra.GetBitmaps();
 
                 if(export) {
@@ -96,7 +97,7 @@ namespace KyleHyde.Formats.LastWindow {
                 new WindowImageAnimated(bitmaps, fileNameNoExt).Show();
 
             } else if (filenameParts[0].ToUpper() == "PACK") {
-                LWPack.OpenPack(filePath, fileName);
+                LWPack.OpenPack(filePath, true, fileName);
             } else {
                 MessageBox.Show("Unexpected file extension: " + filenameParts[0]);
             }
@@ -104,13 +105,13 @@ namespace KyleHyde.Formats.LastWindow {
 
         public override void OpenAllPaks(List<string> dirfiles) {
             foreach(string file in dirfiles) {
-                LWPack.OpenPack(file, Path.GetFileName(file));
+                LWPack.OpenPack(file, true, Path.GetFileName(file));
             }
         }
 
         private static GTFS Decompress(string file) {
             //First 4 bytes is uncompressed size
-            //Next 2 bytes should be 78 9C
+            //Next 2 bytes should be 78 9C (zlib header)
 
             GTFS fs = null;
 
@@ -132,41 +133,68 @@ namespace KyleHyde.Formats.LastWindow {
             return fs;
         }
 
+        private static GTFS Decompress(GTFS fs_comp) {
+            //First 4 bytes is uncompressed size
+            //Next 2 bytes should be 78 9C (zlib header)
+
+            GTFS fs_decomp = null;
+            int uncomLen = GT.ReadInt32(fs_comp, 4, false);
+
+            byte[] raw = new byte[uncomLen];
+            using (MemoryStream decompressedStream = new MemoryStream()) {
+                MemoryStream msStream = fs_comp.GetStream();
+                msStream.Position = 6;
+                using (DeflateStream decompressionStream = new DeflateStream(msStream, CompressionMode.Decompress)) {
+                    decompressionStream.CopyTo(decompressedStream);
+                }
+                raw = decompressedStream.ToArray();
+                fs_decomp = new GTFS(raw);
+            }
+
+            return fs_decomp;
+        }
+
         public override void MassConvert(List<string> dirfiles) {
             throw new NotImplementedException();
         }
 
-        public override object Open2(string filePath) {
-            string fileName = Path.GetFileName(filePath);
+        public override object Open2(FileListItem fileItem) {
+            string fileName = Path.GetFileName(fileItem.File);
             string[] filenameParts = fileName.Split('.');
             Array.Reverse(filenameParts);
 
             try {
-                GTFS fs;
+                GTFS fs = fileItem.GTFS;
+                if (fs == null)
+                    return null; //This can happen from setting MTC to blank
+
+                fs.PrepareByteStream();
+                fs.Position = 0;
+
                 string extUpper = filenameParts[0].ToUpper();
                 switch (extUpper) {
                     case "BIN":
                     case "IBA":
                     case "IFB":
-                        fs = Decompress(filePath);
+                        fs = Decompress(fileItem.GTFS);
                         return fs;
 
                     case "BPG":
-                        fs = Decompress(filePath);
+                        fs = Decompress(fileItem.GTFS);
                         BPG bpg = new BPG(fs, fileName.ToLower());
                         return bpg;
 
                     case "EBP":
-                        fs = Decompress(filePath);
+                        fs = Decompress(fileItem.GTFS);
                         EBP ebp = new EBP(fs);
                         return ebp;
 
                     case "BRA":
-                        LWBRA bra = new LWBRA(filePath);
+                        LWBRA bra = new LWBRA(fileItem.GTFS);
                         return bra;
 
                     case "MTC":
-                        fs = new GTFS(filePath, true);
+                        fs = new GTFS(fileItem.File, true);
                         MTC mtc = new MTC(fs);
                         return mtc;
                 }

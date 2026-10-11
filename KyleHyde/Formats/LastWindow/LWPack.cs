@@ -8,7 +8,7 @@ namespace KyleHyde.Formats.LastWindow
     {
         public static string extract_path = @".\GT-LastWindow\Extract";
 
-        public static void OpenPack(string file, string safefile)
+        public static List<Pack> OpenPack(string file, bool doExtract, string safefile)
         {
             bool flip = true;
             GTFS fs = new GTFS(file);
@@ -21,28 +21,33 @@ namespace KyleHyde.Formats.LastWindow
 
             List<Pack> listPack = new List<Pack>();
 
+            long nextOffset = offset + 4;
             for (int i = 0; i < numFiles; i++)
             {
                 byte nameLen = GT.ReadByte(fs);
                 string name = GT.ReadASCII(fs, nameLen, false);
                 int fileLen = GT.ReadInt32(fs, 4, flip);
 
-                listPack.Add(new Pack(name, -1, fileLen));
+                listPack.Add(new Pack(name, nextOffset, fileLen));
+                nextOffset += fileLen;
             }
 
-            string toFolder = safefile.Replace('.', '_');
+            if (doExtract) {
+                string toFolder = safefile.Replace('.', '_');
 
-            if (!Directory.Exists(extract_path))
-                Directory.CreateDirectory(extract_path);
+                if (!Directory.Exists(extract_path))
+                    Directory.CreateDirectory(extract_path);
 
-            if (!Directory.Exists(extract_path + "\\" + toFolder))
-                Directory.CreateDirectory(extract_path + "\\" + toFolder);
+                if (!Directory.Exists(extract_path + "\\" + toFolder))
+                    Directory.CreateDirectory(extract_path + "\\" + toFolder);
 
-            foreach (Pack pack in listPack)
-            {
-                string newfile = extract_path + "\\" + toFolder + "\\" + pack.Filename;
-                GT.WriteSubFile(fs, newfile, (int)pack.Size);
+                foreach (Pack pack in listPack) {
+                    string newfile = extract_path + "\\" + toFolder + "\\" + pack.Filename;
+                    GT.WriteSubFile(fs, newfile, (int)pack.Size);
+                }
             }
+
+            return listPack;
         }
 
     }

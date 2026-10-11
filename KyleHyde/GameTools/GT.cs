@@ -82,65 +82,62 @@ namespace GameTools {
             return Encoding.ASCII.GetString(bString);
         }
 
-        public static string ReadASCII(GTFS fs, long offset, int length, bool flip = false) {
+        public static string ReadASCII(GTFS fs, long offset, long length, bool flip = false) {
             return Encoding.ASCII.GetString(ReadBytes(fs, offset, length, flip));
         }
-        public static string ReadASCII(GTFS fs, int length, bool flip = false) {
+        public static string ReadASCII(GTFS fs, long length, bool flip = false) {
             return Encoding.ASCII.GetString(ReadBytes(fs, length, flip));
         }
 
-        public static int ReadInt16(GTFS fs, int length, bool flip = false) {
+        public static int ReadInt16(GTFS fs, long length, bool flip = false) {
             byte[] bytes = ReadBytes(fs, length, flip);
 
             return BitConverter.ToInt16(bytes, 0);
         }
 
-        public static uint ReadUInt32(GTFS fs, long offset, int length, bool flip = false) {
+        public static uint ReadUInt32(GTFS fs, long offset, long length, bool flip = false) {
             byte[] bytes = ReadBytes(fs, offset, length, flip);
 
             return BitConverter.ToUInt32(bytes, 0);
         }
 
-        public static int ReadInt32(FileStream fs, int length, bool flip = false) {
+        public static int ReadInt32(FileStream fs, long length, bool flip = false) {
             byte[] bytes = new byte[length];
-            fs.Read(bytes, (int)fs.Position, length);
+            fs.Read(bytes, (int)fs.Position, (int)length);
 
             return BitConverter.ToInt32(bytes, 0);
         }
 
-        public static int ReadInt32(GTFS fs, int length = 4, bool flip = false) {
+        public static int ReadInt32(GTFS fs, long length = 4, bool flip = false) {
             byte[] bytes = ReadBytes(fs, length, flip);
 
             return BitConverter.ToInt32(bytes, 0);
         }
 
-        public static uint ReadUInt32(GTFS fs, int length = 4, bool flip = false) {
+        public static uint ReadUInt32(GTFS fs, long length = 4, bool flip = false) {
             byte[] bytes = ReadBytes(fs, length, flip);
 
             return BitConverter.ToUInt32(bytes, 0);
         }
 
-        public static ushort ReadUInt16(GTFS fs, int length, bool flip = false) {
+        public static ushort ReadUInt16(GTFS fs, long length, bool flip = false) {
             byte[] bytes = ReadBytes(fs, length, flip);
 
             return BitConverter.ToUInt16(bytes, 0);
         }
 
-        public static float ReadFloat(GTFS fs, int length, bool flip = false) {
+        public static float ReadFloat(GTFS fs, long length, bool flip = false) {
             byte[] bytes = ReadBytes(fs, length, flip);
 
             return BitConverter.ToSingle(bytes, 0);
         }
 
-        public static byte[] ReadBytes(GTFS fs, int length, bool flip = false) {
+        public static byte[] ReadBytes(GTFS fs, long length, bool flip = false) {
             if (length < 0)
-                throw new Exception();
+                throw new ArgumentOutOfRangeException();
 
             byte[] bytes = new byte[length];
             fs.Read(bytes, 0, length);
-
-            //for (int i = 0; i < length i++)
-                //bytes[i] = (byte)fs.ReadByte();
 
             if (EnableGTFSView)
                 fs.AddTrack(fs.Position-length, length);
@@ -151,7 +148,7 @@ namespace GameTools {
             return bytes;
         }
 
-        public static byte[] ReadBytes(GTFS fs, long offset, int length, bool flip = false) {
+        public static byte[] ReadBytes(GTFS fs, long offset, long length, bool flip = false) {
             byte[] bytes = new byte[length];
 
             long original = fs.Position;

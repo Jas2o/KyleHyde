@@ -63,7 +63,14 @@ namespace KyleHyde {
 
                 string[] files = Directory.GetFiles(folder, "*", SearchOption.AllDirectories);
                 foreach (string file in files) {
-                    dataview.Add(file, folder);
+                    FileListItem item = dataview.Add(file, folder);
+
+                    if(file.EndsWith(loader.PackExtension)) {
+                        List<GameTools.Pack> packFiles = Formats.HotelDusk.WPF.Open(file, false);
+                        foreach(Pack packFile in packFiles) {
+                            FileListItem vitem = dataview.AddVirtual(item, packFile);
+                        }
+                    }
                 }
             }
         }
@@ -80,7 +87,14 @@ namespace KyleHyde {
 
                 string[] files = Directory.GetFiles(folder, "*", SearchOption.AllDirectories);
                 foreach (string file in files) {
-                    dataview.Add(file, folder);
+                    FileListItem item = dataview.Add(file, folder);
+
+                    if (file.EndsWith(loader.PackExtension)) {
+                        List<GameTools.Pack> packFiles = Formats.LastWindow.LWPack.OpenPack(file, false, "");
+                        foreach (Pack packFile in packFiles) {
+                            FileListItem vitem = dataview.AddVirtual(item, packFile);
+                        }
+                    }
                 }
             }
         }
@@ -99,7 +113,7 @@ namespace KyleHyde {
             if (item == null)
                 return;
 
-            object result = loader.Open2(item.File);
+            object result = loader.Open2(item);
             if (result is GameTools.GTFS)
                 hexEditor.Stream = (result as GameTools.GTFS).GetStream();
             else
@@ -116,6 +130,10 @@ namespace KyleHyde {
                 tabControl.SelectedItem = tabText;
             } else if (result is GameTools.GTFS) {
                 tabControl.SelectedItem = tabHex;
+            } else if (result is KyleHyde.Formats.HotelDusk.TXT) {
+                hexEditor.Stream = (result as KyleHyde.Formats.HotelDusk.TXT).GTFS.GetStream();
+                txtText.Text = (result as KyleHyde.Formats.HotelDusk.TXT).Text;
+                tabControl.SelectedItem = tabText;
             } else if (result is KyleHyde.Formats.HotelDusk.FRM) {
                 bmps = new Bitmap[] { (result as KyleHyde.Formats.HotelDusk.FRM).bitmap };
                 DisplayBitmaps();
@@ -155,8 +173,7 @@ namespace KyleHyde {
             if (item == null)
                 return;
 
-            object result = loader.Open2(item.File);
-
+            object result = loader.Open2(item);
             if (result is KyleHyde.Formats.LastWindow.MTC) {
                 bmpsMTC = (result as KyleHyde.Formats.LastWindow.MTC).GetBitmaps();
                 DisplayBitmapsWithMTC();
@@ -215,6 +232,8 @@ namespace KyleHyde {
         */
 
         private void DisplayBitmaps() {
+            indexLimit = bmps.Length - 1;
+
             bitmapImages = new BitmapImage[bmps.Length];
             bitmapImagesMTC = new BitmapImage[0];
             bitmapImagesComposite = new BitmapImage[0];

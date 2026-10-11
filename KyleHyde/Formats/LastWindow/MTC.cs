@@ -21,7 +21,7 @@ namespace KyleHyde.Formats.LastWindow {
             fs.Position += 16; //Zeroes
 
             mtcWidth = 25;
-            mtcHeight = (fs.Length - 32) / numFrames / 25 / 2;
+            mtcHeight = (int)(fs.Length - 32) / numFrames / 25 / 2;
 
             listFrames = new List<MTCFrame>();
             for (int i = 0; i < numFrames; i++)

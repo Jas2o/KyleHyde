@@ -96,9 +96,11 @@ namespace GameTools {
                 Position = Length - offset;
         }
 
-        public virtual void Read(byte[] buffer, int bufferoffset, int length) {
-            for (int i = 0; i < length; i++)
+        public virtual bool Read(byte[] buffer, int bufferoffset, long length) {
+            for (int i = 0; i < length; i++) {
                 buffer[bufferoffset + i] = bytes[Position++];
+            }
+            return true;
         }
 
         public void WriteBytesToFile(string filename) {
@@ -108,6 +110,14 @@ namespace GameTools {
         public MemoryStream GetStream() {
             PrepareByteStream();
             return new MemoryStream(bytes);
+        }
+
+        public GTFS GetSub(long offset, long size) {
+            if(bytes == null)
+                PrepareByteStream();
+            byte[] buffer = new byte[size];
+            Array.Copy(bytes, offset, buffer, 0, size);
+            return new GTFS(buffer);
         }
     }
 }

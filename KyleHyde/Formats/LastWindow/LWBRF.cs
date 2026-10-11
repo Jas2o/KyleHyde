@@ -22,7 +22,7 @@ namespace KyleHyde.Formats.LastWindow
         {
         }
 
-        public LWBRF(int Number, int Height, int Width, GTFSW fs, int decBufferLength, int offset, int coLength, int comBufferLen)
+        public LWBRF(int Number, int Height, int Width, GTFS fs, int decBufferLength, int offset, int coLength, int comBufferLen)
         {
             this.Number = Number;
             this.Height = Height;

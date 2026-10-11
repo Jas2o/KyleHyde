@@ -36,9 +36,9 @@ namespace KyleHyde.Formats.LastWindow
         }
         */
 
-        public LWBRA(string filepath)
+        public LWBRA(GTFS fs)
         {
-            GTFSW fs = new GTFSW(filepath);
+            //GTFSW fs = new GTFSW(filepath);
 
             NumFrames = GT.ReadInt32(fs);
             Unknown1 = GT.ReadInt32(fs); //Largest lenBuffer?
