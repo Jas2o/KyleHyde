@@ -41,6 +41,9 @@ namespace KyleHyde {
             App.Current.Dispatcher.Invoke(new Action(() => {
                 ListDataRaw.Add(di);
                 ListData.Add(di);
+
+                if (packFile.Filename.IndexOf(".mtc", StringComparison.OrdinalIgnoreCase) >= 0)
+                    ListDataMTC.Add(di);
             }));
             return di;
         }

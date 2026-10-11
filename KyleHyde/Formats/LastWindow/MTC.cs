@@ -32,8 +32,8 @@ namespace KyleHyde.Formats.LastWindow {
         {
             Bitmap[] bitmaps = new Bitmap[numFrames];
             for (int i = 0; i < numFrames; i++) {
-                bitmaps[i] = listFrames[i].bitmap;
-                continue;
+                //bitmaps[i] = listFrames[i].bitmap;
+                //continue;
                 
                 Bitmap newImage = new Bitmap(anmWidth, anmHeight);
                 using (Graphics gr = Graphics.FromImage(newImage)) {

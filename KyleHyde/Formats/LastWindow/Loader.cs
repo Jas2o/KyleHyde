@@ -194,7 +194,6 @@ namespace KyleHyde.Formats.LastWindow {
                         return bra;
 
                     case "MTC":
-                        fs = new GTFS(fileItem.File, true);
                         MTC mtc = new MTC(fs);
                         return mtc;
                 }
