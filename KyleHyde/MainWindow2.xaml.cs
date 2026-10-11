@@ -1,16 +1,15 @@
-﻿using Ookii.Dialogs.Wpf;
+﻿using GameTools;
+using Ookii.Dialogs.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using System.Xml.Linq;
 
 namespace KyleHyde {
     /// <summary>

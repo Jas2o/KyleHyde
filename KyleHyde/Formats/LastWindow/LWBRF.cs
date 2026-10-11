@@ -1,8 +1,6 @@
 using GameTools;
 using System;
-using System.Diagnostics;
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace KyleHyde.Formats.LastWindow
 {

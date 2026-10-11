@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-
-namespace GameTools {
+﻿namespace GameTools {
     public class GTFSW : GTFS {
         //Writable
 

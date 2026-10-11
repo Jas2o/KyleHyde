@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace GameTools {
     public abstract class Loader {

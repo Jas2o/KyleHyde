@@ -1,5 +1,4 @@
 ﻿using GameTools;
-using Microsoft.Win32;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;

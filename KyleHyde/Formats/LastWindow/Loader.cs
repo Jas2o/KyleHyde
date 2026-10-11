@@ -1,6 +1,4 @@
 ﻿using GameTools;
-using KyleHyde.Formats.LastWindow;
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,7 +6,6 @@ using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Windows;
-using System.Windows.Markup;
 
 namespace KyleHyde.Formats.LastWindow {
     public class Loader : GameTools.Loader {
