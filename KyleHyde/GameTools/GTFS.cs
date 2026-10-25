@@ -27,8 +27,8 @@ namespace GameTools {
 
         public GTFS(string path) : this(path, true) { }
 
-        public GTFS(byte[] source) {
-            file = "GTFSBytes.null";
+        public GTFS(byte[] source, string virtualName = "GTFSBytes.null") {
+            file = virtualName;
             bytes = source;
             Position = 0;
 
@@ -112,12 +112,12 @@ namespace GameTools {
             return new MemoryStream(bytes);
         }
 
-        public GTFS GetSub(long offset, long size) {
+        public GTFS GetSub(long offset, long size, string virtualname) {
             if(bytes == null)
                 PrepareByteStream();
             byte[] buffer = new byte[size];
             Array.Copy(bytes, offset, buffer, 0, size);
-            return new GTFS(buffer);
+            return new GTFS(buffer, virtualname);
         }
     }
 }

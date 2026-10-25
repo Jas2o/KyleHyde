@@ -25,7 +25,8 @@ namespace KyleHyde.Formats.LastWindow
             for (int i = 0; i < numFiles; i++)
             {
                 byte nameLen = GT.ReadByte(fs);
-                string name = GT.ReadASCII(fs, nameLen, false);
+                byte[] nameB = GT.ReadTextArray(fs, nameLen, false);
+                string name = System.Text.Encoding.Default.GetString(nameB);
                 int fileLen = GT.ReadInt32(fs, 4, flip);
 
                 listPack.Add(new Pack(name, nextOffset, fileLen));

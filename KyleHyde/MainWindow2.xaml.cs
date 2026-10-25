@@ -52,24 +52,38 @@ namespace KyleHyde {
         }
 
         private void BtnLoadHotelDusk_Click(object sender, RoutedEventArgs e) {
-            var dialog = new VistaFolderBrowserDialog();
-            dialog.SelectedPath = App.Settings.DirHotelDusk;
-            if (dialog.ShowDialog(this).GetValueOrDefault()) {
-                dataview.Clear();
-                loader = new Formats.HotelDusk.Loader();
+            string basePath = string.Empty;
+            string[] files = [];
 
-                string folder = dialog.SelectedPath;
-                App.Settings.DirHotelDusk = folder;
+            if (System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftShift)) {
+                var dialog = new VistaOpenFileDialog();
+                dialog.InitialDirectory = App.Settings.DirHotelDusk;
+                if (dialog.ShowDialog(this).GetValueOrDefault()) {
+                    basePath = System.IO.Path.GetDirectoryName(dialog.FileName);
+                    files = new string[] { dialog.FileName };
+                }
+            } else {
+                var dialog = new VistaFolderBrowserDialog();
+                dialog.SelectedPath = App.Settings.DirHotelDusk;
+                if (dialog.ShowDialog(this).GetValueOrDefault()) {
+                    basePath = dialog.SelectedPath;
+                    App.Settings.DirHotelDusk = basePath;
+                    files = Directory.GetFiles(basePath, "*", SearchOption.AllDirectories);
+                }
+            }
 
-                string[] files = Directory.GetFiles(folder, "*", SearchOption.AllDirectories);
-                foreach (string file in files) {
-                    FileListItem item = dataview.Add(file, folder);
+            if (files.Length == 0)
+                return;
 
-                    if(file.EndsWith(loader.PackExtension)) {
-                        List<GameTools.Pack> packFiles = Formats.HotelDusk.WPF.Open(file, false);
-                        foreach(Pack packFile in packFiles) {
-                            FileListItem vitem = dataview.AddVirtual(item, packFile);
-                        }
+            dataview.Clear();
+            loader = new Formats.HotelDusk.Loader();
+            foreach (string file in files) {
+                FileListItem item = dataview.Add(file, basePath);
+
+                if(file.EndsWith(loader.PackExtension)) {
+                    List<GameTools.Pack> packFiles = Formats.HotelDusk.WPF.Open(file, false);
+                    foreach(Pack packFile in packFiles) {
+                        FileListItem vitem = dataview.AddVirtual(item, packFile);
                     }
                 }
             }

@@ -46,6 +46,8 @@ namespace KyleHyde {
                 Settings = JsonSettings.Load<Settings>(pathSettings);
             else
                 Settings = JsonSettings.Construct<Settings>(pathSettings);
+
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         }
 
         public static void ShowUnhandledExceptionFromSrc(Exception e, string source) {

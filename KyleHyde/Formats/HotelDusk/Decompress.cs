@@ -76,7 +76,7 @@ namespace KyleHyde.Formats.HotelDusk {
 
             //new FormHexCompare(expanded, uncompressed).Show();
 
-            return new GTFS(uncompressed);
+            return new GTFS(uncompressed, fs.FilePath);
         }
 
         private static int hibit(int n) {

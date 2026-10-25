@@ -39,7 +39,7 @@ namespace GameTools {
             File = filename;
             Relative = parent.Relative + "\\" + filename;
             Ext = Path.GetExtension(filename);
-            GTFS = parent.GTFS.GetSub(offset, size);
+            GTFS = parent.GTFS.GetSub(offset, size, Relative);
         }
     }
 }

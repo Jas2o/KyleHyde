@@ -136,10 +136,26 @@
                     <Grid>
                         <TextBox
                             x:Name="txtText"
+                            FontSize="20"
                             HorizontalScrollBarVisibility="Auto"
+                            TextWrapping="Wrap"
                             VerticalScrollBarVisibility="auto" />
                     </Grid>
                 </TabItem>
+                <!--<TabItem Name="tabText2" Header="Formatted">
+                    <Grid>
+                        <RichTextBox
+                            x:Name="richText"
+                            HorizontalScrollBarVisibility="Auto"
+                            VerticalScrollBarVisibility="auto">
+                            <RichTextBox.Resources>
+                                <Style TargetType="{x:Type Paragraph}">
+                                    <Setter Property="Margin" Value="0" />
+                                </Style>
+                            </RichTextBox.Resources>
+                        </RichTextBox>
+                    </Grid>
+                </TabItem>-->
                 <TabItem Name="tabImage" Header="Image">
                     <Border x:Name="brdImage">
                         <Grid Margin="5">

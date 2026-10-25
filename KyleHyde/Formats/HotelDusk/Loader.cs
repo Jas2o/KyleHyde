@@ -69,13 +69,15 @@ namespace KyleHyde.Formats.HotelDusk {
 
                     long baseOffset = decompressed.Position;
 
-                    string input = GT.ReadASCII(decompressed, (int)(decompressed.Length - 1 - baseOffset), false);
+                    byte[] inputB = GT.ReadTextArray(decompressed, (int)(decompressed.Length - 1 - baseOffset), false);
+                    string input = System.Text.Encoding.Default.GetString(inputB);
                     input = input.Replace((char)0x00, (char)0x20);
 
                     new WindowText(input).Show();
 
                 } else {
-                    string input = GT.ReadASCII(decompressed, decompressed.Length - 1, false);
+                    byte[] inputB = GT.ReadTextArray(decompressed, decompressed.Length - 1, false);
+                    string input = System.Text.Encoding.Default.GetString(inputB);
                     input = input.Replace("\n", "\r\n");
 
                     new WindowText(input).Show();

@@ -25,8 +25,7 @@ namespace GameTools {
 
             return b;
         }
-
-        public static string ReadASCIItoNull(GTFS fs, long offset, bool flip = false, byte terminator = 0x00) {
+        public static byte[] ReadTextArraytoNull(GTFS fs, long offset, bool flip = false, byte terminator = 0x00) {
             long previous = fs.Position;
 
             int end = 0;
@@ -45,11 +44,10 @@ namespace GameTools {
             fs.Position = previous;
 
             byte[] bString = ReadBytes(fs, offset, end, flip);
-
-            return Encoding.ASCII.GetString(bString);
+            return bString;
         }
 
-        public static string ReadASCIINulltoNull(GTFS fs, long offset, bool flip, byte terminator = 0x00) {
+        public static byte[] ReadTextArrayNulltoNull(GTFS fs, long offset, bool flip, byte terminator = 0x00) {
             long previous = fs.Position;
 
             int start = 0;
@@ -78,15 +76,14 @@ namespace GameTools {
             fs.Position = previous;
 
             byte[] bString = ReadBytes(fs, offset + start, end, flip);
-
-            return Encoding.ASCII.GetString(bString);
+            return bString;
         }
 
-        public static string ReadASCII(GTFS fs, long offset, long length, bool flip = false) {
-            return Encoding.ASCII.GetString(ReadBytes(fs, offset, length, flip));
+        public static byte[] ReadTextArray(GTFS fs, long offset, long length, bool flip = false) {
+            return ReadBytes(fs, offset, length, flip);
         }
-        public static string ReadASCII(GTFS fs, long length, bool flip = false) {
-            return Encoding.ASCII.GetString(ReadBytes(fs, length, flip));
+        public static byte[] ReadTextArray(GTFS fs, long length, bool flip = false) {
+            return ReadBytes(fs, length, flip);
         }
 
         public static int ReadInt16(GTFS fs, long length, bool flip = false) {
